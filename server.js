@@ -4,6 +4,7 @@ import { notFound, errorHandler } from "./middleware/errorMiddleware.js";
 import cors from "cors";
 import helmet from "helmet";
 import connectToDB from "./config/connectToDB.js";
+import authRouter from "./routes/authRouter.js";
 
 // configs
 dotenv.config();
@@ -18,6 +19,7 @@ app.use(helmet());
 app.use(cors());
 
 // routes
+app.use("/api/auth", authRouter);
 
 // error middlewares
 app.use(notFound);
