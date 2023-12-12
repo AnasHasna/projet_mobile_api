@@ -1,12 +1,16 @@
 import expressAsyncHandler from "express-async-handler";
-import Article from "../models/articleModel.js";
-import path from "path";
 import fs from "fs";
+import path, { dirname } from "path";
+import { fileURLToPath } from "url";
+import Article from "../models/articleModel.js";
+import Rating from "../models/ratingModel.js";
 import {
   cloudinaryRemoveImage,
   cloudinaryUploadImage,
 } from "../utils/cloudinary.js";
-import Rating from "../models/ratingModel.js";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 /**
  * @desc    Fetch articles
@@ -148,8 +152,8 @@ const getSingleArticle = expressAsyncHandler(async (req, res) => {
 
 export {
   addNewArticle,
-  getArticles,
-  updateArticle,
   deleteArticle,
+  getArticles,
   getSingleArticle,
+  updateArticle,
 };

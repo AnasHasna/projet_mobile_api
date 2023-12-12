@@ -1,7 +1,27 @@
-import path from "path";
-import multer from "multer";
+// import multer from "multer";
+// import path from "path";
 
-// photo storage
+// // photo storage
+// const photoStorage = multer.diskStorage({
+//   destination: (req, file, cb) => {
+//     cb(null, path.join(__dirname, "../images"));
+//   },
+//   filename: (req, file, cb) => {
+//     if (file) {
+//       cb(null, new Date().toISOString().replace(/:/g, "-") + file.originalname);
+//     } else {
+//       cb(null, false);
+//     }
+//   },
+// });
+
+import multer from "multer";
+import path, { dirname } from "path";
+import { fileURLToPath } from "url";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
 const photoStorage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, path.join(__dirname, "../images"));

@@ -1,9 +1,15 @@
-import expressAsyncHandler from "express-async-handler";
-import { User } from "../models/userModel.js";
 import bcrypt from "bcryptjs";
-import { cloudinaryUploadImage } from "../utils/cloudinary.js";
-import path from "path";
+import expressAsyncHandler from "express-async-handler";
 import fs from "fs";
+import path from "path";
+import { User } from "../models/userModel.js";
+import { cloudinaryUploadImage } from "../utils/cloudinary.js";
+
+import { dirname } from "path";
+import { fileURLToPath } from "url";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 /**
  * @description     update user

@@ -19,6 +19,7 @@ import {
 const signup = asyncHandler(async (req, res) => {
   // validate req.body
   const { error } = validateSignUpUser(req.body);
+
   if (error) {
     return res
       .status(400)

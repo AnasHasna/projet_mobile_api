@@ -7,6 +7,12 @@ import {
   cloudinaryUploadImage,
 } from "../utils/cloudinary.js";
 
+import { dirname } from "path";
+import { fileURLToPath } from "url";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
 /**
  * @description     Get all categories
  * @router          /categories

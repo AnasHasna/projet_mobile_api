@@ -66,7 +66,7 @@ userSchema.methods.generateAuthToken = function () {
       id: this._id,
       isAdmin: this.isAdmin,
     },
-    process.env.JWT_SECRET
+    process.env.JWT_SECRET_KEY
   );
 };
 
@@ -133,10 +133,10 @@ const validateUpdateUser = (obj) => {
 
 export {
   User,
-  validateSignUpUser,
-  validateLoginUser,
-  validateUpdateUser,
   validateForgetPassword,
-  validateVerifyCode,
+  validateLoginUser,
   validateSendVerificationCode,
+  validateSignUpUser,
+  validateUpdateUser,
+  validateVerifyCode,
 };

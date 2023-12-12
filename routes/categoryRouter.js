@@ -5,6 +5,7 @@ import {
   getCategoriesController,
   updateCategoryController,
 } from "../controllers/categoryController.js";
+import photoUpload from "../middleware/photoUpload.js";
 import {
   verifyToken,
   verifyTokenAndBeAdmin,
@@ -15,7 +16,11 @@ const categoryRouter = express.Router();
 categoryRouter
   .route("/")
   .get(verifyToken, getCategoriesController)
-  .post(verifyTokenAndBeAdmin, addCategoryController);
+  .post(
+    verifyTokenAndBeAdmin,
+    photoUpload.single("image"),
+    addCategoryController
+  );
 
 categoryRouter
   .route("/:id")
