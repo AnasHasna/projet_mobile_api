@@ -3,6 +3,7 @@ import {
   addNewArticle,
   deleteArticle,
   getArticles,
+  getSingleArticle,
   updateArticle,
 } from "../controllers/articleController.js";
 import {

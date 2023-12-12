@@ -6,6 +6,7 @@ import {
   cloudinaryRemoveImage,
   cloudinaryUploadImage,
 } from "../utils/cloudinary.js";
+import Rating from "../models/ratingModel.js";
 
 /**
  * @desc    Fetch articles
@@ -67,7 +68,9 @@ const updateArticle = expressAsyncHandler(async (req, res) => {
     article.content = content || article.content;
     article.categoryId = categoryId || article.categoryId;
     if (req.file) {
-      const deletedCloudImage = cloudinaryRemoveImage(article.image.public_id);
+      const deletedCloudImage = await cloudinaryRemoveImage(
+        article.image.public_id
+      );
       if (deletedCloudImage) {
         const image = path.join(__dirname, `../images/${req.file.filename}`);
         const data = await cloudinaryUploadImage(image);
@@ -76,15 +79,12 @@ const updateArticle = expressAsyncHandler(async (req, res) => {
           url: data.url,
         };
         fs.unlinkSync(image);
-      } else {
-        throw new Error("Internal Server Error(cloudinary)");
       }
     }
     await article.save();
     res.status(200).json({ status: "success" });
   } else {
-    res.status(404);
-    throw new Error("Article not found");
+    res.status(404).json({ status: "fail", message: "Article not found" });
   }
 });
 
@@ -97,17 +97,59 @@ const deleteArticle = expressAsyncHandler(async (req, res) => {
   const article = await Article.findById(req.params.id);
   if (article) {
     if (article.image) {
-      const deletedCloudImage = cloudinaryRemoveImage(article.image.public_id);
+      const deletedCloudImage = await cloudinaryRemoveImage(
+        article.image.public_id
+      );
       if (!deletedCloudImage) {
-        throw new Error("Internal Server Error(cloudinary)");
+        res.status(500).json({
+          status: "fail",
+          message: "Internal Server Error(cloudinary)",
+        });
       }
     }
     await article.remove();
     res.status(200).json({ status: "success" });
   } else {
-    res.status(404);
-    throw new Error("Article not found");
+    res.status(404).json({ status: "fail", message: "Article not found" });
   }
 });
 
-export { addNewArticle, getArticles, updateArticle, deleteArticle };
+/**
+ * Get single article
+ * @route   GET /api/articles/:id
+ * @access  Private
+ */
+const getSingleArticle = expressAsyncHandler(async (req, res) => {
+  const article = await Article.findById(req.params.id).populate({
+    path: "categoryId",
+    select: "name",
+  });
+  if (!article) {
+    res.status(404).json({ status: "fail", message: "Article not found" });
+  } else {
+    const { userId } = req.body;
+    const rating = await Rating.findOne({
+      user: userId,
+      article: req.params.id,
+    });
+    const articleRating = await Rating.find({ article: req.params.id }).select(
+      "rating"
+    );
+    const totalRating = articleRating.reduce(
+      (acc, item) => acc + item.rating,
+      0
+    );
+    const avgRating = totalRating / articleRating.length;
+    res
+      .status(200)
+      .json({ status: "success", data: { article, rating, avgRating } });
+  }
+});
+
+export {
+  addNewArticle,
+  getArticles,
+  updateArticle,
+  deleteArticle,
+  getSingleArticle,
+};

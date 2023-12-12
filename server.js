@@ -7,6 +7,7 @@ import { errorHandler, notFound } from "./middleware/errorMiddleware.js";
 import authRouter from "./routes/authRouter.js";
 import categoryRouter from "./routes/categoryRouter.js";
 import articleRouter from "./routes/articleRouter.js";
+import ratingRouter from "./routes/ratingRouter.js";
 
 // configs
 dotenv.config();
@@ -24,6 +25,7 @@ app.use(cors());
 app.use("/api/auth", authRouter);
 app.use("/api/categories", categoryRouter);
 app.use("/api/articles", articleRouter);
+app.use("/api/ratings", ratingRouter);
 
 // error middlewares
 app.use(notFound);
