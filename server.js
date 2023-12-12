@@ -8,6 +8,7 @@ import authRouter from "./routes/authRouter.js";
 import categoryRouter from "./routes/categoryRouter.js";
 import articleRouter from "./routes/articleRouter.js";
 import ratingRouter from "./routes/ratingRouter.js";
+import userRouter from "./routes/userRouter.js";
 
 // configs
 dotenv.config();
@@ -23,6 +24,7 @@ app.use(cors());
 
 // routes
 app.use("/api/auth", authRouter);
+app.use("/api/users", userRouter);
 app.use("/api/categories", categoryRouter);
 app.use("/api/articles", articleRouter);
 app.use("/api/ratings", ratingRouter);
