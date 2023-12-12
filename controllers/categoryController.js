@@ -1,8 +1,29 @@
 import asyncHandler from "express-async-handler";
 import fs from "fs";
 import path from "path";
-import { Category } from "../models/categoryModel";
-import { cloudinaryUploadImage } from "../utils/cloudinary";
+import Category from "../models/categoryModel.js";
+import { cloudinaryUploadImage } from "../utils/cloudinary.js";
+
+/**
+ * @description     Get all categories
+ * @router          /categories
+ * @method          GET
+ * @access          public
+ */
+
+const getCategoriesController = asyncHandler(async (req, res) => {
+  const queryOptions = {};
+  for (const key in req.query) {
+    if (Object.hasOwnProperty.call(req.query, key)) {
+      queryOptions[key] = req.query[key];
+    }
+  }
+  const categories = await Category.find(queryOptions);
+  res.status(200).json({
+    status: "success",
+    data: categories,
+  });
+});
 
 /**
  * @description     add new category
@@ -38,10 +59,9 @@ const addCategoryController = asyncHandler(async (req, res) => {
   await category.save();
 
   res.status(201).json({
-    status: true,
-    message: "category created with success",
-    category: category,
+    status: "success",
+    data: category,
   });
 });
 
-export { addCategoryController };
+export { addCategoryController, getCategoriesController };

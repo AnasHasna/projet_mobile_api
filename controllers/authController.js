@@ -1,12 +1,12 @@
 import bcrypt from "bcryptjs";
 import asyncHandler from "express-async-handler";
 import {
-  validateSignUpUser,
   User,
-  validateLoginUser,
   validateForgetPassword,
-  validateVerifyCode,
+  validateLoginUser,
   validateSendVerificationCode,
+  validateSignUpUser,
+  validateVerifyCode,
 } from "../models/userModel.js";
 
 /**
@@ -209,4 +209,4 @@ const sendverificationcode = asyncHandler(async (req, res) => {
   res.status(200).json({ status: true });
 });
 
-export { signup, login, forgetpassword, verifyCode, sendverificationcode };
+export { forgetpassword, login, sendverificationcode, signup, verifyCode };

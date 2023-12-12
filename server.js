@@ -1,10 +1,11 @@
-import express from "express";
-import dotenv from "dotenv";
-import { notFound, errorHandler } from "./middleware/errorMiddleware.js";
 import cors from "cors";
+import dotenv from "dotenv";
+import express from "express";
 import helmet from "helmet";
 import connectToDB from "./config/connectToDB.js";
+import { errorHandler, notFound } from "./middleware/errorMiddleware.js";
 import authRouter from "./routes/authRouter.js";
+import categoryRouter from "./routes/categoryRouter.js";
 
 // configs
 dotenv.config();
@@ -20,6 +21,7 @@ app.use(cors());
 
 // routes
 app.use("/api/auth", authRouter);
+app.use("/api/categories", categoryRouter);
 
 // error middlewares
 app.use(notFound);
