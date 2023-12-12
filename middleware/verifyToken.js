@@ -64,7 +64,7 @@ const verifyTokenAndAuthorization = (req, res, next) => {
 };
 export {
   verifyToken,
+  verifyTokenAndAuthorization,
   verifyTokenAndBeAdmin,
   verifyTokenAndOnlyUser,
-  verifyTokenAndAuthorization,
 };
