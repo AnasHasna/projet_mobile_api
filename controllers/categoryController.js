@@ -2,6 +2,7 @@ import asyncHandler from "express-async-handler";
 import fs from "fs";
 import path from "path";
 import { Category } from "../models/categoryModel";
+import { cloudinaryUploadImage } from "../utils/cloudinary";
 
 /**
  * @description     add new category
@@ -36,13 +37,11 @@ const addCategoryController = asyncHandler(async (req, res) => {
 
   await category.save();
 
-  res
-    .status(201)
-    .json({
-      status: true,
-      message: "category created with success",
-      category: category,
-    });
+  res.status(201).json({
+    status: true,
+    message: "category created with success",
+    category: category,
+  });
 });
 
 export { addCategoryController };

@@ -1,4 +1,4 @@
-import { api, config, uploader } from "cloudinary";
+import cloudinary from "cloudinary";
 import dotenv from "dotenv";
 
 dotenv.config();
@@ -12,7 +12,7 @@ config({
 // Cloudinary Upload Image
 const cloudinaryUploadImage = async (fileToUpload) => {
   try {
-    const data = await uploader.upload(fileToUpload, {
+    const data = await cloudinary.v2.uploader.upload(fileToUpload, {
       resource_type: "auto",
     });
     return data;
@@ -25,7 +25,7 @@ const cloudinaryUploadImage = async (fileToUpload) => {
 // Cloudinary Remove Image
 const cloudinaryRemoveImage = async (imagePublicID) => {
   try {
-    const result = await uploader.destroy(imagePublicID);
+    const result = await cloudinary.v2.uploader.destroy(imagePublicID);
     return result;
   } catch (error) {
     console.log(error);
@@ -36,7 +36,7 @@ const cloudinaryRemoveImage = async (imagePublicID) => {
 // Cloudinary Remove Multiple images
 const cloudinaryRemoveMultipleImages = async (publicIds) => {
   try {
-    const result = await api.delete_resources(publicIds);
+    const result = await cloudinary.v2.api.delete_resources(publicIds);
     return result;
   } catch (error) {
     console.log(error);
