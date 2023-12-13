@@ -1,9 +1,9 @@
 import express from "express";
-import { handleRating } from "../controllers/ratingController.js";
+import { handleRatingController } from "../controllers/ratingController.js";
 import { verifyToken } from "../middleware/verifyToken.js";
 
 const ratingRouter = express.Router();
 
-ratingRouter.route("/").post(verifyToken, handleRating);
+ratingRouter.route("/").post(verifyToken, handleRatingController);
 
 export default ratingRouter;

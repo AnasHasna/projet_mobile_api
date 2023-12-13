@@ -7,25 +7,20 @@ import Rating from "../models/ratingModel.js";
  * @access  Private
  */
 
-const handleRating = expressAsyncHandler(async (req, res) => {
-  const { rating, userId, articleId } = req.body;
-  const ratingExist = await Rating.findOne({
-    user: userId,
+const handleRatingController = expressAsyncHandler(async (req, res) => {
+  const { articleId, userId, rating } = req.body;
+  const rate = await Rating.findOne({
     article: articleId,
+    user: userId,
   });
-  if (ratingExist) {
-    ratingExist.rating = rating;
-    await ratingExist.save();
-    res.status(201).json({ status: "success" });
+  if (rate !== null) {
+    rate.rating = rating;
+    await rate.save();
+    return res.status(200).json({ status: "success", data: rate });
   } else {
-    const userRating = new Rating({
-      rating,
-      user: userId,
-      article: articleId,
-    });
-    await userRating.save();
-    res.status(201).json({ status: "success" });
+    rate.rating = rating;
+    res.status(201).json({ status: "success", data: rate });
   }
 });
 
-export { handleRating };
+export { handleRatingController };
