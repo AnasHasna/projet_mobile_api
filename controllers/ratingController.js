@@ -18,7 +18,12 @@ const handleRatingController = expressAsyncHandler(async (req, res) => {
     await rate.save();
     return res.status(200).json({ status: "success", data: rate });
   } else {
-    rate.rating = rating;
+    const rate = new Rating({
+      article: articleId,
+      user: userId,
+      rating: rating,
+    });
+    await rate.save();
     res.status(201).json({ status: "success", data: rate });
   }
 });
