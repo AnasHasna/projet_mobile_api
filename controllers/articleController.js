@@ -55,7 +55,7 @@ const addNewArticle = expressAsyncHandler(async (req, res) => {
     fs.unlinkSync(image);
   }
   await article.save();
-  res.status(201).json({ status: "success" });
+  res.status(201).json({ status: "success" ,data: article});
 });
 
 /**
@@ -155,5 +155,6 @@ export {
   deleteArticle,
   getArticles,
   getSingleArticle,
-  updateArticle,
+  updateArticle
 };
+

@@ -24,7 +24,11 @@ categoryRouter
 
 categoryRouter
   .route("/:id")
-  .get(verifyTokenAndBeAdmin, updateCategoryController)
+  .put(
+    verifyTokenAndBeAdmin,
+    photoUpload.single("image"),
+    updateCategoryController
+  )
   .delete(verifyTokenAndBeAdmin, deleteCategoryController);
 
 export default categoryRouter;

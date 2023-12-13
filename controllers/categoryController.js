@@ -89,8 +89,8 @@ const updateCategoryController = asyncHandler(async (req, res) => {
       message: "category not found",
     });
   }
-  category.name = name;
-  category.description = description;
+  category.name = name || category.name;
+  category.description = description || category.description;
 
   const file = req.file;
   if (file) {
@@ -128,7 +128,7 @@ const deleteCategoryController = asyncHandler(async (req, res) => {
     });
   }
   await cloudinaryRemoveImage(category.image.publicId);
-  await category.remove();
+  await category.deleteOne();
   res.status(200).json({
     status: "success",
     message: "category deleted",

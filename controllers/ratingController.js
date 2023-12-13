@@ -18,12 +18,12 @@ const handleRating = expressAsyncHandler(async (req, res) => {
     await ratingExist.save();
     res.status(201).json({ status: "success" });
   } else {
-    const rating = new Rating({
+    const userRating = new Rating({
       rating,
       user: userId,
       article: articleId,
     });
-    await rating.save();
+    await userRating.save();
     res.status(201).json({ status: "success" });
   }
 });
