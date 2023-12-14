@@ -210,4 +210,23 @@ const sendverificationcode = asyncHandler(async (req, res) => {
   res.status(200).json({ status: true });
 });
 
-export { forgetpassword, login, sendverificationcode, signup, verifyCode };
+const changePasswordController = asyncHandler(async (req, res) => {
+  const { email, password } = req.body;
+  const user = await User.findOne({ email });
+  if (user === null) {
+    return res.status(404).json({ status: false, message: "user not exist" });
+  }
+  const salt = await bcrypt.genSalt(10);
+  const hashedPassword = await bcrypt.hash(password, salt);
+  user.password = hashedPassword;
+  await user.save();
+  res.status(200).json({ status: true });
+});
+export {
+  changePasswordController,
+  forgetpassword,
+  login,
+  sendverificationcode,
+  signup,
+  verifyCode,
+};
