@@ -4,9 +4,11 @@ import express from "express";
 import helmet from "helmet";
 import connectToDB from "./config/connectToDB.js";
 import { errorHandler, notFound } from "./middleware/errorMiddleware.js";
+import articleRouter from "./routes/articleRouter.js";
 import authRouter from "./routes/authRouter.js";
 import categoryRouter from "./routes/categoryRouter.js";
-import articleRouter from "./routes/articleRouter.js";
+import favorisRouter from "./routes/favorisRouter.js";
+import homeRouter from "./routes/homeRouter.js";
 import ratingRouter from "./routes/ratingRouter.js";
 import userRouter from "./routes/userRouter.js";
 
@@ -23,11 +25,13 @@ app.use(helmet());
 app.use(cors());
 
 // routes
+app.use("/api/home", homeRouter);
 app.use("/api/auth", authRouter);
 app.use("/api/users", userRouter);
 app.use("/api/categories", categoryRouter);
 app.use("/api/articles", articleRouter);
 app.use("/api/ratings", ratingRouter);
+app.use("/api/favoris", favorisRouter);
 
 // error middlewares
 app.use(notFound);
