@@ -20,7 +20,12 @@ const homeController = expressAsyncHandler(async (req, res) => {
       .populate("categoryId");
 
     const favoris = await Favoris.find({ user: userId })
-      .populate("article")
+      .populate({
+        path: "article",
+        populate: {
+          path: "categoryId",
+        },
+      })
       .sort({ createdAt: -1 });
     res.status(200).json({
       status: "success",
