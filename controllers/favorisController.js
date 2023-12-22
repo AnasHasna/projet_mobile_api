@@ -40,7 +40,12 @@ const addToFavorisController = expressAsyncHandler(async (req, res) => {
     favoris = await Favoris.findOne({
       article: articleId,
       user: userId,
-    }).populate("article");
+    }).populate({
+      path: "article",
+      populate: {
+        path: "categoryId",
+      },
+    });
 
     res.status(201).json({ status: "success", data: favoris });
   }
