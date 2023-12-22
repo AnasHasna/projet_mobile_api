@@ -25,19 +25,23 @@ const addToFavorisController = expressAsyncHandler(async (req, res) => {
   if (articleId === undefined || userId === undefined) {
     res.status(400).json({ status: "fail", message: "bad request" });
   }
-  console.log(articleId, userId);
   const favoris = await Favoris.findOne({
     article: articleId,
     user: userId,
-  });
+  }).populate("article");
   if (favoris !== null) {
     res.status(200).json({ status: "success", data: favoris });
   } else {
-    const favoris = new Favoris({
+    let favoris = new Favoris({
       article: articleId,
       user: userId,
     });
     await favoris.save();
+    favoris = await Favoris.findOne({
+      article: articleId,
+      user: userId,
+    }).populate("article");
+
     res.status(201).json({ status: "success", data: favoris });
   }
 });
