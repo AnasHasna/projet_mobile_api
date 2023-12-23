@@ -46,9 +46,14 @@ const updateUser = expressAsyncHandler(async (req, res) => {
       fs.unlinkSync(image);
     }
     await user.save();
-    res
-      .status(200)
-      .json({ status: true, message: "user updated with success", user: user });
+    const updatedUser = await User.findById(id)
+      .select("-password")
+      .select("-verifyCode");
+    res.status(200).json({
+      status: true,
+      message: "user updated with success",
+      user: updatedUser,
+    });
   } else {
     res.status(404).json({ status: false, message: "user not found" });
   }
