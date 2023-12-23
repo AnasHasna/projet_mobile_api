@@ -41,7 +41,7 @@ const updateUser = expressAsyncHandler(async (req, res) => {
     await user.save();
     res
       .status(200)
-      .json({ status: true, message: "user updated with success" });
+      .json({ status: true, message: "user updated with success", user: user });
   } else {
     res.status(404).json({ status: false, message: "user not found" });
   }
