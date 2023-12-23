@@ -10,8 +10,8 @@ const favorisRouter = express.Router();
 
 favorisRouter
   .route("/")
-  .get(verifyToken, getAllFavorisController)
   .post(verifyToken, addToFavorisController)
   .delete(verifyToken, deleteFromFavorisController);
+favorisRouter.route("/getfavoris").post(verifyToken, getAllFavorisController);
 
 export default favorisRouter;
