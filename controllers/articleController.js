@@ -22,7 +22,11 @@ const getArticles = expressAsyncHandler(async (req, res) => {
   const queryOptions = {};
   for (const key in req.query) {
     if (Object.hasOwnProperty.call(req.query, key)) {
-      queryOptions[key] = req.query[key];
+      if (key === "title") {
+        queryOptions.title = { $regex: req.query.title, $options: "i" };
+      } else {
+        queryOptions[key] = req.query[key];
+      }
     }
   }
   const articles = await Article.find({ ...queryOptions })

@@ -10,22 +10,32 @@ import Favoris from "../models/favorisModel.js";
  */
 
 const homeController = expressAsyncHandler(async (req, res) => {
-  const categories = await Category.find();
-  const news = await Article.find()
-    .sort({ createdAt: -1 })
-    .populate("categoryId");
+  const { userId } = req.body;
+  if (userId === undefined) {
+    res.status(400).json({ status: "fail", message: "bad request" });
+  } else {
+    const categories = await Category.find();
+    const news = await Article.find()
+      .sort({ createdAt: -1 })
+      .populate("categoryId");
 
-  const favoris = await Favoris.find({ user: req.body.userId }).populate(
-    "article"
-  );
-  res.status(200).json({
-    status: "success",
-    data: {
-      categories,
-      news,
-      favoris,
-    },
-  });
+    const favoris = await Favoris.find({ user: userId })
+      .populate({
+        path: "article",
+        populate: {
+          path: "categoryId",
+        },
+      })
+      .sort({ createdAt: -1 });
+    res.status(200).json({
+      status: "success",
+      data: {
+        categories,
+        news,
+        favoris,
+      },
+    });
+  }
 });
 
 export { homeController };

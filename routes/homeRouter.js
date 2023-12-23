@@ -5,6 +5,6 @@ import { verifyToken } from "../middleware/verifyToken.js";
 
 const homeRouter = express.Router();
 
-homeRouter.route("/").get(verifyToken, homeController);
+homeRouter.route("/").post(verifyToken, homeController);
 
 export default homeRouter;
