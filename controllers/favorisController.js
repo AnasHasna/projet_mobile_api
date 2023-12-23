@@ -3,7 +3,7 @@ import Favoris from "../models/favorisModel.js";
 
 /**
  * @desc    GET all favoris
- * @route   GET /api/favoris
+ * @route   POST /api/favoris/getfavoris
  * @access  Private
  */
 
