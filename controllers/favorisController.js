@@ -8,9 +8,12 @@ import Favoris from "../models/favorisModel.js";
  */
 
 const getAllFavorisController = expressAsyncHandler(async (req, res) => {
-  const favoris = await Favoris.find({ user: req.body.userId }).populate(
-    "article"
-  );
+  const favoris = await Favoris.find({ user: req.body.userId }).populate({
+    path: "article",
+    populate: {
+      path: "categoryId",
+    },
+  });
   res.status(200).json({ status: "success", data: favoris });
 });
 
