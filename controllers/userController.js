@@ -3,7 +3,10 @@ import expressAsyncHandler from "express-async-handler";
 import fs from "fs";
 import path from "path";
 import { User } from "../models/userModel.js";
-import { cloudinaryUploadImage } from "../utils/cloudinary.js";
+import {
+  cloudinaryRemoveImage,
+  cloudinaryUploadImage,
+} from "../utils/cloudinary.js";
 
 import { dirname } from "path";
 import { fileURLToPath } from "url";
@@ -19,10 +22,11 @@ const __dirname = dirname(__filename);
 
 const updateUser = expressAsyncHandler(async (req, res) => {
   const { id } = req.params;
-  const { name, email, password } = req.body;
+  const { firstName, lastName, email, password } = req.body;
   const user = await User.findById(id);
   if (user) {
-    user.name = name || user.name;
+    user.firstName = firstName || user.firstName;
+    user.lastName = lastName || user.lastName;
     user.email = email || user.email;
     if (password) {
       const salt = await bcrypt.genSalt(10);
@@ -32,7 +36,10 @@ const updateUser = expressAsyncHandler(async (req, res) => {
     if (req.file) {
       const image = path.join(__dirname, `../images/${req.file.filename}`);
       const data = await cloudinaryUploadImage(image);
-      user.image = {
+      if (user.profilePhoto.public_id !== null) {
+        await cloudinaryRemoveImage(user.profilePhoto.public_id);
+      }
+      user.profilePhoto = {
         public_id: data.public_id,
         url: data.url,
       };
