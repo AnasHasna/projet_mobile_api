@@ -130,16 +130,23 @@ const deleteArticle = expressAsyncHandler(async (req, res) => {
 const getSingleArticle = expressAsyncHandler(async (req, res) => {
   const article = await Article.findById(req.params.id).populate({
     path: "categoryId",
-    select: "name",
   });
   if (!article) {
-    res.status(404).json({ status: "fail", message: "Article not found" });
+    res.status(404).json({ status: "fail", message: "Article n'existe pas" });
   } else {
     const { userId } = req.body;
     const rating = await Rating.findOne({
       user: userId,
       article: req.params.id,
-    });
+    })
+      .populate("user")
+      .populate({
+        path: "article",
+        populate: {
+          path: "categoryId",
+        },
+      });
+
     const articleRating = await Rating.find({ article: req.params.id }).select(
       "rating"
     );
