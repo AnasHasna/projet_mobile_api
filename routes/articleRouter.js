@@ -6,11 +6,11 @@ import {
   getSingleArticle,
   updateArticle,
 } from "../controllers/articleController.js";
+import photoUpload from "../middleware/photoUpload.js";
 import {
   verifyToken,
   verifyTokenAndBeAdmin,
 } from "../middleware/verifyToken.js";
-import photoUpload from "../middleware/photoUpload.js";
 
 const articleRouter = express.Router();
 
@@ -22,6 +22,6 @@ articleRouter
   .route("/:id")
   .put(verifyTokenAndBeAdmin, photoUpload.single("image"), updateArticle)
   .delete(verifyTokenAndBeAdmin, deleteArticle)
-  .get(verifyToken, getSingleArticle);
+  .post(verifyToken, getSingleArticle);
 
 export default articleRouter;
