@@ -27,7 +27,7 @@ const getCategoriesController = asyncHandler(async (req, res) => {
       queryOptions[key] = req.query[key];
     }
   }
-  const categories = await Category.find(queryOptions);
+  const categories = await Category.find(queryOptions).sort({ createdAt: -1 });
   res.status(200).json({
     status: "success",
     data: categories,
