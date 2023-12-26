@@ -15,6 +15,25 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 /**
+ * @description     get all users
+ * @router          /api/users
+ * @method          GET
+ */
+
+const getUsers = expressAsyncHandler(async (req, res) => {
+  const users = await User.find({
+    isAdmin: false,
+  })
+    .select("-password")
+    .sort({ createdAt: -1 });
+  res.status(200).json({
+    status: true,
+    message: "users fetched with success",
+    users,
+  });
+});
+
+/**
  * @description     update user
  * @router          /api/users
  * @method          PUT
@@ -59,4 +78,4 @@ const updateUser = expressAsyncHandler(async (req, res) => {
   }
 });
 
-export { updateUser };
+export { getUsers, updateUser };

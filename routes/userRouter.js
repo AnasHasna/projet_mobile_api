@@ -1,9 +1,11 @@
 import express from "express";
-import { verifyToken } from "../middleware/verifyToken.js";
+import { getUsers, updateUser } from "../controllers/userController.js";
 import photoUpload from "../middleware/photoUpload.js";
-import { updateUser } from "../controllers/userController.js";
+import { verifyToken } from "../middleware/verifyToken.js";
 
 const userRouter = express.Router();
+
+userRouter.get("/", verifyToken, getUsers);
 
 userRouter.put("/:id", verifyToken, photoUpload.single("image"), updateUser);
 
