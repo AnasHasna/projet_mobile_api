@@ -9,6 +9,7 @@ import {
 
 import { dirname } from "path";
 import { fileURLToPath } from "url";
+import Article from "../models/articleModel.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -71,6 +72,37 @@ const addCategoryController = asyncHandler(async (req, res) => {
     status: "success",
     data: category,
   });
+});
+
+/**
+ * @description     Get single category
+ * @router          /categories/:id
+ * @method          GET
+ * @access          public
+ */
+
+const getSingleCategoryController = asyncHandler(async (req, res) => {
+  const { id } = req.params;
+  const category = await Category.findById(id);
+  if (!category) {
+    return res.status(404).json({
+      status: "fail",
+      message: "Catégorie non trouvée",
+    });
+  } else {
+    //get the number of articles in this category
+    const numberOfArticles = await Article.countDocuments({
+      categoryId: id,
+    });
+
+    res.status(200).json({
+      status: "success",
+      data: {
+        category,
+        numberOfArticles,
+      },
+    });
+  }
 });
 
 /**
@@ -139,5 +171,6 @@ export {
   addCategoryController,
   deleteCategoryController,
   getCategoriesController,
+  getSingleCategoryController,
   updateCategoryController,
 };

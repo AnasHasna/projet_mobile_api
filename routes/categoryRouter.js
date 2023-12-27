@@ -3,6 +3,7 @@ import {
   addCategoryController,
   deleteCategoryController,
   getCategoriesController,
+  getSingleCategoryController,
   updateCategoryController,
 } from "../controllers/categoryController.js";
 import photoUpload from "../middleware/photoUpload.js";
@@ -29,6 +30,7 @@ categoryRouter
     photoUpload.single("image"),
     updateCategoryController
   )
+  .get(verifyToken, getSingleCategoryController)
   .delete(verifyTokenAndBeAdmin, deleteCategoryController);
 
 export default categoryRouter;
