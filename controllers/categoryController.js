@@ -48,7 +48,7 @@ const addCategoryController = asyncHandler(async (req, res) => {
   if (category) {
     return res
       .status(400)
-      .json({ status: false, message: "category already exist" });
+      .json({ status: "failed", message: "category already exist" });
   }
   category = new Category({
     name,
