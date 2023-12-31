@@ -48,7 +48,7 @@ const addCategoryController = asyncHandler(async (req, res) => {
   if (category) {
     return res
       .status(400)
-      .json({ status: "failed", message: "category already exist" });
+      .json({ status: "failed", message: "Catégorie déjà existante." });
   }
   category = new Category({
     name,
@@ -87,7 +87,7 @@ const getSingleCategoryController = asyncHandler(async (req, res) => {
   if (!category) {
     return res.status(404).json({
       status: "fail",
-      message: "Catégorie non trouvée",
+      message: "Catégorie non trouvée.",
     });
   } else {
     //get the number of articles in this category
@@ -118,7 +118,7 @@ const updateCategoryController = asyncHandler(async (req, res) => {
   if (!category) {
     return res.status(404).json({
       status: "fail",
-      message: "category not found",
+      message: "Catégorie non trouvée.",
     });
   }
   category.name = name || category.name;
@@ -156,14 +156,14 @@ const deleteCategoryController = asyncHandler(async (req, res) => {
   if (!category) {
     return res.status(404).json({
       status: "fail",
-      message: "category not found",
+      message: "Catégorie non trouvée.",
     });
   }
   await cloudinaryRemoveImage(category.image.publicId);
   await category.deleteOne();
   res.status(200).json({
     status: "success",
-    message: "category deleted",
+    message: "Catégorie supprimée avec succès.",
   });
 });
 

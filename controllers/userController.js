@@ -28,7 +28,7 @@ const getUsers = expressAsyncHandler(async (req, res) => {
     .sort({ createdAt: -1 });
   res.status(200).json({
     status: true,
-    message: "users fetched with success",
+    message: "Utilisateurs récupérés avec succès.",
     users,
   });
 });
@@ -70,11 +70,13 @@ const updateUser = expressAsyncHandler(async (req, res) => {
       .select("-verifyCode");
     res.status(200).json({
       status: true,
-      message: "user updated with success",
+      message: "Utilisateur mis à jour avec succès.",
       user: updatedUser,
     });
   } else {
-    res.status(404).json({ status: false, message: "user not found" });
+    res
+      .status(404)
+      .json({ status: false, message: "Utilisateur introuvable." });
   }
 });
 

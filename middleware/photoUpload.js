@@ -41,7 +41,7 @@ const photoUpload = multer({
   fileFilter: (req, file, cb) => {
     // make condition is there is no file
     if (!file) {
-      cb({ message: "No file provided" }, false);
+      cb({ message: "Aucun fichier fourni." }, false);
     } else {
       // Get the file extension from the original filename
       const fileExtension = file.originalname.split(".").pop();
@@ -53,7 +53,7 @@ const photoUpload = multer({
       if (allowedExtensions.includes(fileExtension.toLowerCase())) {
         cb(null, true);
       } else {
-        cb({ message: "Unsupported file format" }, false);
+        cb({ message: "Format de fichier non pris en charge." }, false);
       }
     }
   },

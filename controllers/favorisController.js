@@ -26,7 +26,7 @@ const getAllFavorisController = expressAsyncHandler(async (req, res) => {
 const addToFavorisController = expressAsyncHandler(async (req, res) => {
   const { articleId, userId } = req.body;
   if (articleId === undefined || userId === undefined) {
-    res.status(400).json({ status: "fail", message: "bad request" });
+    res.status(400).json({ status: "fail", message: "Requête incorrecte." });
   }
   const favoris = await Favoris.findOne({
     article: articleId,
@@ -65,7 +65,7 @@ const deleteFromFavorisController = expressAsyncHandler(async (req, res) => {
   const { favorisId } = req.body;
 
   await Favoris.findByIdAndDelete(favorisId);
-  res.status(200).json({ status: "success", data: "Deleted with success" });
+  res.status(200).json({ status: "success", message: "Supprimé avec succès." });
 });
 
 export {

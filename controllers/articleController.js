@@ -92,7 +92,9 @@ const updateArticle = expressAsyncHandler(async (req, res) => {
     await article.save();
     res.status(200).json({ status: "success" });
   } else {
-    res.status(404).json({ status: "fail", message: "Article not found" });
+    res
+      .status(404)
+      .json({ status: "fail", message: "L'article n'a pas été trouvé." });
   }
 });
 
@@ -111,14 +113,16 @@ const deleteArticle = expressAsyncHandler(async (req, res) => {
       if (!deletedCloudImage) {
         res.status(500).json({
           status: "fail",
-          message: "Internal Server Error(cloudinary)",
+          message: "Erreur interne du serveur (Cloudinary).",
         });
       }
     }
     await article.remove();
     res.status(200).json({ status: "success" });
   } else {
-    res.status(404).json({ status: "fail", message: "Article not found" });
+    res
+      .status(404)
+      .json({ status: "fail", message: "L'article n'a pas été trouvé." });
   }
 });
 
@@ -132,7 +136,9 @@ const getSingleArticle = expressAsyncHandler(async (req, res) => {
     path: "categoryId",
   });
   if (!article) {
-    res.status(404).json({ status: "fail", message: "Article n'existe pas" });
+    res
+      .status(404)
+      .json({ status: "fail", message: "L'article n'a pas été trouvé." });
   } else {
     const { userId } = req.body;
     const rating = await Rating.findOne({

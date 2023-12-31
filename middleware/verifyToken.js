@@ -5,7 +5,7 @@ const verifyToken = (req, res, next) => {
   if (!authToken) {
     return res
       .status(401)
-      .json({ status: false, message: "no token provided, access denied" });
+      .json({ status: false, message: "Aucun token fourni, accès refusé." });
   }
   // get the token from Bearer token
   const token = authToken.split(" ")[1];
@@ -17,7 +17,7 @@ const verifyToken = (req, res, next) => {
   } catch (error) {
     return res.status(401).json({
       status: false,
-      message: "invalid token, access denied",
+      message: "Token invalide, accès refusé.",
     });
   }
 };
@@ -25,9 +25,10 @@ const verifyToken = (req, res, next) => {
 const verifyTokenAndBeAdmin = (req, res, next) => {
   verifyToken(req, res, () => {
     if (!req.user.isAdmin) {
-      return res
-        .status(403)
-        .json({ status: false, message: "not allowed to access,only admin" });
+      return res.status(403).json({
+        status: false,
+        message: "Accès non autorisé, réservé à l'administrateur uniquement.",
+      });
     }
     next();
   });
@@ -38,7 +39,7 @@ const verifyTokenAndOnlyUser = (req, res, next) => {
     if (req.user.id !== req.params.id) {
       return res.status(403).json({
         status: false,
-        message: "not allow to access,only user himself",
+        message: "Accès non autorisé, uniquement pour l'utilisateur lui-même.",
       });
     }
     next();
@@ -54,7 +55,8 @@ const verifyTokenAndAuthorization = (req, res, next) => {
     ) {
       return res.status(403).json({
         status: false,
-        message: "not allowed to access,only user himself or admin",
+        message:
+          "Accès non autorisé, réservé à l'utilisateur lui-même ou à l'administrateur.",
       });
     }
     next();

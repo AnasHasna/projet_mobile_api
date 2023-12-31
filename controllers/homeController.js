@@ -12,7 +12,7 @@ import Favoris from "../models/favorisModel.js";
 const homeController = expressAsyncHandler(async (req, res) => {
   const { userId } = req.body;
   if (userId === undefined) {
-    res.status(400).json({ status: "fail", message: "bad request" });
+    res.status(400).json({ status: "fail", message: "Requête incorrecte." });
   } else {
     const categories = await Category.find();
     const news = await Article.find()

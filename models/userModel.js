@@ -76,10 +76,27 @@ const User = mongoose.model("User", userSchema);
 // validate SignUpUser
 const validateSignUpUser = (obj) => {
   const shema = Joi.object({
-    firstName: Joi.string().trim().min(5).max(50).required(),
-    lastName: Joi.string().trim().min(5).max(50).required(),
-    email: Joi.string().trim().min(5).max(50).email().required(),
-    password: Joi.string().trim().min(8).max(50).required(),
+    firstName: Joi.string()
+      .trim()
+      .min(5)
+      .max(50)
+      .required("Prénom est obligatoire"),
+    lastName: Joi.string()
+      .trim()
+      .min(5)
+      .max(50)
+      .required("Nom est obligatoire"),
+    email: Joi.string()
+      .trim()
+      .min(5)
+      .max(50)
+      .email()
+      .required("Email est obligatoire"),
+    password: Joi.string()
+      .trim()
+      .min(8)
+      .max(50)
+      .required("Mot de passe est obligatoire"),
   });
 
   return shema.validate(obj);
@@ -88,8 +105,17 @@ const validateSignUpUser = (obj) => {
 // validate loginUser
 const validateLoginUser = (obj) => {
   const shema = Joi.object({
-    email: Joi.string().trim().min(5).max(50).email().required(),
-    password: Joi.string().trim().min(8).max(50).required(),
+    email: Joi.string()
+      .trim()
+      .min(5)
+      .max(50)
+      .email()
+      .required("Email est obligatoire"),
+    password: Joi.string()
+      .trim()
+      .min(8)
+      .max(50)
+      .required("Mot de passe est obligatoire"),
   });
   return shema.validate(obj);
 };
@@ -97,7 +123,12 @@ const validateLoginUser = (obj) => {
 // validate Forget Password
 const validateForgetPassword = (obj) => {
   const shema = Joi.object({
-    email: Joi.string().trim().min(5).max(50).email().required(),
+    email: Joi.string()
+      .trim()
+      .min(5)
+      .max(50)
+      .email()
+      .required("Email est obligatoire"),
   });
   return shema.validate(obj);
 };
@@ -105,7 +136,12 @@ const validateForgetPassword = (obj) => {
 // validate VerifyCode
 const validateVerifyCode = (obj) => {
   const shema = Joi.object({
-    email: Joi.string().trim().min(5).max(50).email(),
+    email: Joi.string()
+      .trim()
+      .min(5)
+      .max(50)
+      .email("Email est obligatoire")
+      .required(),
     verifyCode: Joi.number().min(10000).max(99999),
   });
   return shema.validate(obj);
@@ -114,7 +150,12 @@ const validateVerifyCode = (obj) => {
 // validate SendVerification Code
 const validateSendVerificationCode = (obj) => {
   const shema = Joi.object({
-    email: Joi.string().trim().min(5).max(50).email().required(),
+    email: Joi.string()
+      .trim()
+      .min(5)
+      .max(50)
+      .email("Email est obligatoire")
+      .required(),
   });
   return shema.validate(obj);
 };
@@ -122,11 +163,29 @@ const validateSendVerificationCode = (obj) => {
 // validate UpdateUser
 const validateUpdateUser = (obj) => {
   const shema = Joi.object({
-    firstName: Joi.string().trim().min(5).max(50),
-    lastName: Joi.string().trim().min(5).max(50),
-    email: Joi.string().trim().min(5).max(50).email(),
-    password: Joi.string().trim().min(8).max(50),
-    phone: Joi.string().trim(),
+    firstName: Joi.string()
+      .trim()
+      .min(5)
+      .max(50)
+      .required("Prénom est obligatoire"),
+    lastName: Joi.string()
+      .trim()
+      .min(5)
+      .max(50)
+      .required("Nom est obligatoire"),
+    email: Joi.string()
+      .trim()
+      .min(5)
+      .max(50)
+      .email()
+      .required("Email est obligatoire"),
+    password: Joi.string()
+      .trim()
+      .min(8)
+      .max(50)
+      .required("Mot de passe est obligatoire"),
+
+    phone: Joi.string().trim().required("Téléphone est obligatoire"),
   });
   return shema.validate(obj);
 };

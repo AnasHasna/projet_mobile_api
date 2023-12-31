@@ -31,7 +31,7 @@ const signup = asyncHandler(async (req, res) => {
   if (user) {
     return res
       .status(400)
-      .json({ status: false, message: "email already exist" });
+      .json({ status: false, message: "Email existe déjà." });
   }
   // hash the password
   const salt = await bcrypt.genSalt(10);
@@ -54,9 +54,11 @@ const signup = asyncHandler(async (req, res) => {
     .select("-verifyCode");
   // send response
 
-  res
-    .status(201)
-    .json({ status: true, message: "user create with success", user: user });
+  res.status(201).json({
+    status: true,
+    message: "Utilisateur créé avec succès.",
+    user: user,
+  });
 });
 
 /**
@@ -78,14 +80,16 @@ const login = asyncHandler(async (req, res) => {
   // is user exist
   let user = await User.findOne({ email: req.body.email });
   if (!user) {
-    return res.status(400).json({ status: false, message: "user not found" });
+    return res
+      .status(400)
+      .json({ status: false, message: "Utilisateur non trouvé." });
   }
   // check the password
   const isPasswordMath = await bcrypt.compare(req.body.password, user.password);
   if (!isPasswordMath) {
     return res
       .status(400)
-      .json({ status: false, message: "password not correct" });
+      .json({ status: false, message: "Mot de passe incorrect." });
   }
   const token = user.generateAuthToken();
   // response to user
@@ -117,7 +121,9 @@ const forgetpassword = asyncHandler(async (req, res) => {
   // check if the user is exist
   let user = await User.findOne({ email: req.body.email });
   if (!user) {
-    return res.status(404).json({ status: false, message: "email not exist" });
+    return res
+      .status(404)
+      .json({ status: false, message: "Utilisateur non trouvé." });
   }
   // generate verify code Math.floor(Math.random() * (max - min + 1)) + min;
   const genVerifyCode = Math.floor(Math.random() * 90000) + 10000;
@@ -157,7 +163,7 @@ const verifyCode = asyncHandler(async (req, res) => {
   if (parseInt(req.body.verifyCode) !== user.verifyCode) {
     return res
       .status(400)
-      .json({ status: false, message: "verify code not correct" });
+      .json({ status: false, message: "Code de vérification incorrect." });
   }
 
   // if the account is not verified===>verify it
@@ -191,7 +197,9 @@ const sendverificationcode = asyncHandler(async (req, res) => {
   // check if the email is exist
   const user = await User.findOne({ email: req.body.email });
   if (!user) {
-    return res.status(404).json({ status: false, message: "email not exist" });
+    return res
+      .status(404)
+      .json({ status: false, message: "Utilisateur non trouvé." });
   }
 
   // generate new verification code
@@ -214,7 +222,9 @@ const changePasswordController = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
   const user = await User.findOne({ email });
   if (user === null) {
-    return res.status(404).json({ status: false, message: "user not exist" });
+    return res
+      .status(404)
+      .json({ status: false, message: "Utilisateur non trouvé." });
   }
   const salt = await bcrypt.genSalt(10);
   const hashedPassword = await bcrypt.hash(password, salt);
