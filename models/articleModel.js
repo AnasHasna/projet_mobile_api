@@ -7,7 +7,6 @@ const articleSchema = new mongoose.Schema(
       trim: true,
       required: true,
       minlength: 5,
-      maxlength: 100,
     },
     author: {
       type: String,
@@ -21,7 +20,6 @@ const articleSchema = new mongoose.Schema(
       trim: true,
       required: true,
       minlength: 5,
-      maxlength: 100,
     },
     categoryId: {
       type: mongoose.Schema.Types.ObjectId,
