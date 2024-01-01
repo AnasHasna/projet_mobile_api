@@ -7,14 +7,12 @@ const categorySchema = new mongoose.Schema(
       trim: true,
       required: true,
       minlength: 2,
-      maxlength: 100,
     },
     description: {
       type: String,
       trim: true,
       required: true,
       minlength: 5,
-      maxlength: 200,
     },
     image: {
       type: Object,
