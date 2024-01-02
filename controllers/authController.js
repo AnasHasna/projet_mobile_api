@@ -1,13 +1,6 @@
 import bcrypt from "bcryptjs";
 import asyncHandler from "express-async-handler";
-import {
-  User,
-  validateForgetPassword,
-  validateLoginUser,
-  validateSendVerificationCode,
-  validateSignUpUser,
-  validateVerifyCode,
-} from "../models/userModel.js";
+import { User } from "../models/userModel.js";
 
 /**
  * @description     register new user
@@ -18,12 +11,15 @@ import {
 
 const signup = asyncHandler(async (req, res) => {
   // validate req.body
-  const { error } = validateSignUpUser(req.body);
-
-  if (error) {
+  if (
+    !req.body.firstName ||
+    !req.body.lastName ||
+    !req.body.email ||
+    !req.body.password
+  ) {
     return res
       .status(400)
-      .json({ status: false, message: error.details[0].message });
+      .json({ status: false, message: "Veuillez remplir tous les champs." });
   }
 
   // check if user already exist
@@ -70,11 +66,10 @@ const signup = asyncHandler(async (req, res) => {
 
 const login = asyncHandler(async (req, res) => {
   // validate req.body
-  const { error } = validateLoginUser(req.body);
-  if (error) {
+  if (!req.body.email || !req.body.password) {
     return res
       .status(400)
-      .json({ status: false, message: error.details[0].message });
+      .json({ status: false, message: "Veuillez remplir tous les champs." });
   }
 
   // is user exist
@@ -112,12 +107,11 @@ const login = asyncHandler(async (req, res) => {
  */
 const forgetpassword = asyncHandler(async (req, res) => {
   // validation req.body
-  const { error } = validateForgetPassword(req.body);
-  if (error) {
+  if (!req.body.email)
     return res
       .status(400)
-      .json({ status: false, message: error.details[0].message });
-  }
+      .json({ status: false, message: "Email est obligatoire." });
+
   // check if the user is exist
   let user = await User.findOne({ email: req.body.email });
   if (!user) {
@@ -151,13 +145,16 @@ const forgetpassword = asyncHandler(async (req, res) => {
  */
 
 const verifyCode = asyncHandler(async (req, res) => {
-  // check req.body
-  const { error } = validateVerifyCode(req.body);
-  if (error) {
+  if (!req.body.email)
     return res
       .status(400)
-      .json({ status: false, message: error.details[0].message });
-  }
+      .json({ status: false, message: "Email est obligatoire." });
+  if (!req.body.verifyCode)
+    return res.status(400).json({
+      status: false,
+      message: "Code de vérification est obligatoire.",
+    });
+
   // compare verify codes
   const user = await User.findOne({ email: req.body.email });
   if (parseInt(req.body.verifyCode) !== user.verifyCode) {
@@ -188,12 +185,11 @@ const verifyCode = asyncHandler(async (req, res) => {
 
 const sendverificationcode = asyncHandler(async (req, res) => {
   // check req.body
-  const { error } = validateSendVerificationCode(req.body);
-  if (error) {
+  if (!req.body.email)
     return res
       .status(400)
-      .json({ status: false, message: error.details[0].message });
-  }
+      .json({ status: false, message: "Email est obligatoire." });
+
   // check if the email is exist
   const user = await User.findOne({ email: req.body.email });
   if (!user) {
@@ -219,6 +215,15 @@ const sendverificationcode = asyncHandler(async (req, res) => {
 });
 
 const changePasswordController = asyncHandler(async (req, res) => {
+  if (!req.body.email)
+    return res
+      .status(400)
+      .json({ status: false, message: "Email est obligatoire." });
+  if (!req.body.password)
+    return res
+      .status(400)
+      .json({ status: false, message: "Mot de passe est obligatoire." });
+
   const { email, password } = req.body;
   const user = await User.findOne({ email });
   if (user === null) {
