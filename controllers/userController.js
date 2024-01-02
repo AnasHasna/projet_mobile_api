@@ -55,11 +55,13 @@ const updateUser = expressAsyncHandler(async (req, res) => {
     if (req.file) {
       const image = path.join(__dirname, `../images/${req.file.filename}`);
       const data = await cloudinaryUploadImage(image);
-      if (user.profilePhoto.public_id !== null) {
+      console.log(data);
+      console.log(user);
+      if (user.profilePhoto.publicId !== null) {
         await cloudinaryRemoveImage(user.profilePhoto.public_id);
       }
       user.profilePhoto = {
-        public_id: data.public_id,
+        publicId: data.public_id,
         url: data.url,
       };
       fs.unlinkSync(image);
