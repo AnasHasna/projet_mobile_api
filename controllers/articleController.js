@@ -113,12 +113,12 @@ const updateArticle = expressAsyncHandler(async (req, res) => {
 const deleteArticle = expressAsyncHandler(async (req, res) => {
   const article = await Article.findById(req.params.id);
   if (article) {
-    if (article.image) {
+    if (article.image.public_id) {
       const deletedCloudImage = await cloudinaryRemoveImage(
         article.image.public_id
       );
       if (!deletedCloudImage) {
-        res.status(500).json({
+        return res.status(500).json({
           status: "fail",
           message: "Erreur interne du serveur (Cloudinary).",
         });
@@ -127,7 +127,10 @@ const deleteArticle = expressAsyncHandler(async (req, res) => {
     await article.remove();
     //delete all the favoris that cntain this article
     await Favoris.deleteMany({ article: req.params.id });
-    res.status(200).json({ status: "success" });
+    res.status(200).json({
+      status: "success",
+      message: "L'article a été supprimé avec succès.",
+    });
   } else {
     res
       .status(404)
