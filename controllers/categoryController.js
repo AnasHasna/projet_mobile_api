@@ -160,12 +160,19 @@ const deleteCategoryController = asyncHandler(async (req, res) => {
       message: "Catégorie non trouvée.",
     });
   }
-
+  console.log("Step 1 ===========");
   const articles = await Article.find({ categoryId: req.params.id });
+  console.log("Step 2 ===========");
   const publicIds = articles.map((article) => article.image.public_id);
-  await cloudinaryRemoveMultipleImages(publicIds);
+  console.log("Step 3 ===========");
+  if (publicIds.length !== 0) {
+    await cloudinaryRemoveMultipleImages(publicIds);
+  }
+  console.log("Step 4 ===========");
   await Article.deleteMany({ categoryId: req.params.id });
+  console.log("Step 5 ===========");
   await cloudinaryRemoveImage(category.image.publicId);
+  console.log("Step 6 ===========");
   await category.deleteOne();
 
   res.status(200).json({
