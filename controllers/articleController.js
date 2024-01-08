@@ -124,7 +124,7 @@ const deleteArticle = expressAsyncHandler(async (req, res) => {
         });
       }
     }
-    await article.remove();
+    await Article.deleteOne({ _id: req.params.id });
     //delete all the favoris that cntain this article
     await Favoris.deleteMany({ article: req.params.id });
     res.status(200).json({
