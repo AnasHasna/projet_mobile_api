@@ -68,6 +68,12 @@ const addNewArticle = expressAsyncHandler(async (req, res) => {
  * @access  Private
  */
 const updateArticle = expressAsyncHandler(async (req, res) => {
+  if (!req.body) {
+    res.status(400).json({
+      status: "fail",
+      message: "Veuillez remplir tous les champs.",
+    });
+  }
   const { title, author, content, categoryId } = req.body;
   const article = await Article.findById(req.params.id);
   if (article) {

@@ -4,6 +4,7 @@ import path from "path";
 import Category from "../models/categoryModel.js";
 import {
   cloudinaryRemoveImage,
+  cloudinaryRemoveMultipleImages,
   cloudinaryUploadImage,
 } from "../utils/cloudinary.js";
 
@@ -159,8 +160,14 @@ const deleteCategoryController = asyncHandler(async (req, res) => {
       message: "Catégorie non trouvée.",
     });
   }
+
+  const articles = await Article.find({ categoryId: req.params.id });
+  const publicIds = articles.map((article) => article.image.public_id);
+  await cloudinaryRemoveMultipleImages(publicIds);
+  await Article.deleteMany({ categoryId: req.params.id });
   await cloudinaryRemoveImage(category.image.publicId);
   await category.deleteOne();
+
   res.status(200).json({
     status: "success",
     message: "Catégorie supprimée avec succès.",
