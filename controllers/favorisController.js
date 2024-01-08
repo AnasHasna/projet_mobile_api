@@ -71,5 +71,6 @@ const deleteFromFavorisController = expressAsyncHandler(async (req, res) => {
 export {
   addToFavorisController,
   deleteFromFavorisController,
-  getAllFavorisController,
+  getAllFavorisController
 };
+

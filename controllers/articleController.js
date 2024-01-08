@@ -3,6 +3,7 @@ import fs from "fs";
 import path, { dirname } from "path";
 import { fileURLToPath } from "url";
 import Article from "../models/articleModel.js";
+import Favoris from "../models/favorisModel.js";
 import Rating from "../models/ratingModel.js";
 import {
   cloudinaryRemoveImage,
@@ -124,6 +125,8 @@ const deleteArticle = expressAsyncHandler(async (req, res) => {
       }
     }
     await article.remove();
+    //delete all the favoris that cntain this article
+    await Favoris.deleteMany({ article: req.params.id });
     res.status(200).json({ status: "success" });
   } else {
     res
